@@ -1,37 +1,28 @@
-name: Android Build
+name: Android Build with Docker
 
 on:
   push:
     branches:
-      - main  # Triggers the build only for pushes to the main branch
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    container:
+      image: circleci/android:api-30  # Or any Android-compatible Docker image
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
+      - name: Set up Java Environment
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-1.8-openjdk  # Ensure Java path is set if needed
+        run: echo "Java home set to $JAVA_HOME"
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Set up Executable Permissions for Gradlew
-        run: chmod +x ./gradlew  # Adds execute permission to gradlew
-
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug
+      - name: Build APK with Gradle
+        run: ./gradlew assembleDebug  # Runs inside the container with pre-installed Gradle
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
