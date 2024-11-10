@@ -1,0 +1,29 @@
+plugins {
+    id 'com.android.application' // Required plugin for building an Android app
+}
+
+android {
+    compileSdkVersion 34  // Android API level to compile against
+
+    defaultConfig {
+        applicationId "com.example.beepapp" // Unique identifier for your app
+        minSdkVersion 21      // Minimum API level required to run the app
+        targetSdkVersion 34   // API level the app is targeting
+        versionCode 1         // App version code, increment with each release
+        versionName "1.0"     // User-visible version name
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" 
+        // Specifies the test runner for UI tests
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false // Disables code shrinking; you can enable this if needed
+            // No ProGuard configuration since it’s not required for your simple app
+        }
+    }
+}
+
+dependencies {
+    // No dependencies are needed for the beep functionality
+}
